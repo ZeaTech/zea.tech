@@ -18,6 +18,7 @@
     <!-- Header -->
     <header class="header">
         <img src="img/logo.png" alt="Zea Tech Logo" class="logo">
+        <button class="hamburger" id="hamburger-menu">☰</button>
         <nav class="nav">
             <a href="#sobre">Sobre</a>
             <a href="#cards-section">Soluções</a>
@@ -150,11 +151,16 @@
     <div class="partners-carousel">
         <div class="carousel-container">
             <img src="img/parceiros-ufrpe.png" alt="Logo 1" class="carousel-item">
-            <img src="img/parceiros-sebrae.png" alt="Logo 2" class="carousel-item">
+            <img src="img/parceiros-sebrae2.png" alt="Logo 2" class="carousel-item">
             <img src="img/parceiros-logicaambiental.png" alt="Logo 3" class="carousel-item">
             <img src="img/parceiros-feagri.png" alt="Logo 4" class="carousel-item">
             <img src="img/parceiros-conab.png" alt="Logo 5" class="carousel-item">
             <img src="img/parceiros-bendo.png" alt="Logo 6" class="carousel-item">
+            <img src="img/parceiros-senar.png" alt="Logo 7" class="carousel-item">
+            <img src="img/parceiros-ipa.png" alt="Logo 8" class="carousel-item">
+            <img src="img/parceiros-unicamp.png" alt="Logo 9" class="carousel-item">
+            <img src="img/parceiros-semeam.png" alt="Logo 10" class="carousel-item">
+            <img src="img/parceiros-tecsol.png" alt="Logo 11" class="carousel-item">
         </div>
     </div>
 </section>
@@ -170,7 +176,22 @@
 
 </body>
 <script>
-    const carouselContainer = document.querySelector('.carousel-container');
+  // Menu hamburguer
+const hamburgerMenu = document.getElementById('hamburger-menu');
+const navMenu = document.querySelector('.nav');
+
+hamburgerMenu.addEventListener('click', () => {
+    navMenu.classList.toggle('active');
+});
+
+// Fechar menu ao clicar em um link
+document.querySelectorAll('.nav a').forEach(link => {
+    link.addEventListener('click', () => {
+        navMenu.classList.remove('active');
+    });
+});
+
+const carouselContainer = document.querySelector('.carousel-container');
 let isMouseDown = false;
 let startX;
 let scrollLeft;
@@ -205,19 +226,20 @@ carouselContainer.addEventListener('mousemove', (e) => {
 
 // Função para mover automaticamente o carrossel no mobile
 function moveCarousel() {
-    if (!isMobile) return;
+  if (!isMobile) return;
 
-    const firstItem = carouselContainer.querySelector('.carousel-item');
-    const itemWidth = firstItem.offsetWidth + 20; // Largura + margem
+  const items = carouselContainer.querySelectorAll('.carousel-item');
+  const itemWidth = items[0].offsetWidth + 20; // Largura + margem
 
-    carouselContainer.style.transition = 'transform 0.8s ease-in-out'; // Suavidade melhorada
-    carouselContainer.style.transform = `translateX(-${itemWidth}px)`;
+  carouselContainer.style.transition = 'transform 0.8s ease-in-out';
+  carouselContainer.style.transform = `translateX(-${itemWidth}px)`;
 
-    setTimeout(() => {
-        carouselContainer.style.transition = 'none';
-        carouselContainer.appendChild(firstItem);
-        carouselContainer.style.transform = 'translateX(0)';
-    }, 800); // Tempo para garantir a transição antes do reset
+  setTimeout(() => {
+      carouselContainer.style.transition = 'none';
+      const firstItem = carouselContainer.firstElementChild;
+      carouselContainer.appendChild(firstItem);
+      carouselContainer.style.transform = 'translateX(0)';
+  }, 800);
 }
 
 // Função para iniciar/parar o carrossel no mobile
@@ -231,6 +253,28 @@ function checkMobile() {
         clearInterval(autoScroll);
     }
 }
+
+let touchStart = 0;
+let touchEnd = 0;
+
+carouselContainer.addEventListener('touchstart', (e) => {
+    touchStart = e.touches[0].clientX;
+});
+
+carouselContainer.addEventListener('touchmove', (e) => {
+    touchEnd = e.touches[0].clientX;
+});
+
+carouselContainer.addEventListener('touchend', () => {
+    const diff = touchStart - touchEnd;
+    
+    if (Math.abs(diff) > 50) { // Mínimo de 50px para considerar um swipe
+        if (diff > 0) {
+            // Swipe para esquerda
+            moveCarousel();
+        }
+    }
+});
 
 window.addEventListener('resize', checkMobile);
 checkMobile();

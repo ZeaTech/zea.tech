@@ -30,6 +30,44 @@
     height: 50px;
 }
 
+/* Menu Hambúrguer */
+.hamburger {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    color: white;
+    padding: 5px;
+}
+
+@media (max-width: 768px) {
+    .hamburger {
+        display: block;
+    }
+
+    .nav {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: #718747;
+        flex-direction: column;
+        padding: 20px 0;
+    }
+
+    .nav.active {
+        display: flex;
+    }
+
+    .nav a {
+        margin: 10px 0;
+        text-align: center;
+        padding: 10px;
+    }
+}
+
 .nav a {
     color: white;
     text-decoration: none;
